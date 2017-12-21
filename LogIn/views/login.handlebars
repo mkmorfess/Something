@@ -1,0 +1,64 @@
+<div>Log In:</div>
+<div>
+	<form id="login">
+		<div>Username: <input type="text" name="user"> </div>
+		<div>Password: <input type="password" name="pass"> </div>
+		<button type="submit">Login</button>
+	</form>
+</div>
+
+<div>Create A New Account:</div>
+<div>
+	<form id="create">
+		<div>Username: <input type="text" name="newUser"> </div>
+		<div>Password: <input type="password" name="newPass"> </div>
+		<button type="submit">Create</button>
+	</form>
+</div>
+
+
+<script>
+
+$("#login").on("submit", function(event){
+	event.preventDefault();
+
+	var loginInfo = {
+		user: $("#login [name=user]").val().trim(),
+		pass: $("#login [name=pass]").val().trim()
+	}
+
+	$.ajax("/login",{
+		type: "POST",
+		data: loginInfo
+	}).then(function() {
+        
+
+		$.get("/burgers/:id", function(data) {
+			console.log(data);
+		})
+
+        location.reload();
+      });
+	})
+
+
+$("#create").on("submit", function(event){
+	event.preventDefault();
+
+	var createInfo = {
+		user: $("#create [name=newUser]").val().trim(),
+		pass: $("#create [name=newPass]").val().trim()
+	}
+
+	$.ajax("/create",{
+		type: "POST",
+		data: createInfo
+	}).then(function() {
+        
+
+		// $.get("/burgers/:id")
+
+        location.reload();
+      });
+	})
+</script>

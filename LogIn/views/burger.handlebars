@@ -1,0 +1,56 @@
+
+<ul>
+	{{#each data}}
+		<li><p>{{this.burger_name}}</p></li>
+    <button data-burgerid="{{this.id}}" class="deleteBurg">Devour!</button>
+	{{/each}}
+</ul>
+
+<form id="newBurger" class="button-size">
+  <textarea type="text" name="burger"></textarea>
+  <button type="submit">New Burger</button>
+</form>
+
+<script>
+
+
+$(".deleteBurg").on("click", function(event) {
+    var id = $(this).data("burgerid");
+
+    
+    $.ajax("/burger/" + id, {
+      type: "DELETE"
+    }).then(
+      function() {
+        console.log("deleted id ", id);
+        
+        location.reload();
+      }
+    );
+  });
+
+
+$("#newBurger").on("submit", function(event) {
+    
+    event.preventDefault();
+
+    var newBurger = {
+      burgers: $("#newBurger [name=burger]").val().trim()
+    };
+
+    console.log(newBurger.burgers + " on Line 22");
+    // console.log(burgers);
+
+    
+    $.ajax("/burger", {
+      type: "POST",
+      data: newBurger
+    }).then(
+      function() {
+        console.log("created new burger");
+        
+        location.reload();
+      }
+    );
+  });
+</script>
